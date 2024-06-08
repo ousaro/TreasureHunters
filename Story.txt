@@ -1,0 +1,175 @@
+Thank you for the image of the diagrams. Let's review and enhance the diagrams for each class in the game "Captain Clown Nose's Quest for the Golden Skull" to ensure they are clear and optimal. I will refine each diagram based on the provided structure and the responsibilities of each class.
+
+### PlayerController
+
+**Responsibilities:**
+- Handle player movement (left, right)
+- Handle jumping action
+- Detect collisions with hazards and enemies
+- Manage player's health and lives
+
+**Diagram:**
+```
+PlayerController
+   |
+   |-- Move Horizontally
+   |     |-- Determine Input Direction
+   |     |-- Apply Movement
+   |
+   |-- Jump
+   |     |-- Should Jump
+   |     |     |-- Determine User Input
+   |     |     |-- Is Grounded
+   |     |
+   |     |-- Apply Jump
+   |
+   |-- Handle Collisions
+   |     |-- Detect Hazards
+   |     |-- Detect Enemies
+   |
+   |-- Manage Health
+         |-- Track Health
+         |-- Update Lives
+         |-- Handle Respawn
+```
+
+### EnemyController
+
+**Responsibilities:**
+- Manage enemy behaviors for Crabby, Fierce Tooth, and Pink Star
+- Handle enemy movements and attacks
+- Detect collisions with the player
+
+**Diagram:**
+```
+EnemyController
+   |
+   |-- Manage Enemy Types
+   |     |-- Crabby Behavior
+   |     |-- Fierce Tooth Behavior
+   |     |-- Pink Star Behavior
+   |
+   |-- Handle Movement
+   |     |-- Can Move
+   |     |-- Apply Movement
+   |     |-- Player in Following Range
+   |
+   |-- Handle Attacks
+         |-- Can Attack
+         |-- Should Attack
+         |-- Apply Attack
+         |-- Player in Attack Range
+```
+
+### GameManager
+
+**Responsibilities:**
+- Oversee game state and level progression
+- Manage collection of map fragments and other collectibles
+- Handle transitions between scenes
+
+**Diagram:**
+```
+GameManager
+   |
+   |-- Manage Game State
+   |     |-- Check Level Progression
+   |     |-- Transition Between Scenes
+   |
+   |-- Manage Collectibles
+         |-- Detect Collectible Pickup
+         |-- Update Game State
+```
+
+### MenuManager
+
+**Responsibilities:**
+- Manage the menu scene
+- Handle transitions to the main game scene
+- Provide options to start game, view options, and read story
+
+**Diagram:**
+```
+MenuManager
+   |
+   |-- Start Game
+   |     |-- Transition to Game Scene
+   |
+   |-- View Options
+   |     |-- Adjust Settings
+   |
+   |-- Read Story
+         |-- Display Story
+```
+
+### TrapManager
+
+**Responsibilities:**
+- Control behavior of traps (Cannons, Seashells, Totems)
+- Handle trap activation and deactivation
+- Detect collisions with player or enemies
+
+**Diagram:**
+```
+TrapManager
+   |
+   |-- Manage Cannons
+   |     |-- Cannon Behavior
+   |     |-- Detect Collisions
+   |
+   |-- Manage Seashells
+   |     |-- Seashell Behavior
+   |     |-- Detect Collisions
+   |
+   |-- Manage Totems
+         |-- Totem Behavior
+         |-- Detect Collisions
+```
+
+### HealthManager
+
+**Responsibilities:**
+- Manage the health system for the player and enemies
+- Track health points and handle damage
+- Handle health pickups and respawns
+
+**Diagram:**
+```
+HealthManager
+   |
+   |-- Manage Player Health
+   |     |-- Track Health Points
+   |     |-- Handle Damage
+   |     |-- Handle Respawn
+   |
+   |-- Manage Enemy Health
+   |     |-- Track Health Points
+   |     |-- Handle Damage
+   |     |-- Handle Respawn
+   |
+   |-- Handle Pickups
+         |-- Detect Pickup
+         |-- Apply Health Pickup Effect
+```
+
+### Observer Pattern
+
+**Responsibilities:**
+- Handle event notifications such as collectible pickups and enemy defeats
+
+**Diagram:**
+```
+ObserverPattern
+   |
+   |-- Register Observer
+   |     |-- Event Subscription
+   |
+   |-- Remove Observer
+   |     |-- Event Unsubscription
+   |
+   |-- Notify Observers
+         |-- Broadcast Event
+         |-- Handle Specific Events
+```
+
+These refined diagrams provide a clearer and more structured overview of each class's responsibilities and methods. If you need further adjustments or additional details, please let me know!
