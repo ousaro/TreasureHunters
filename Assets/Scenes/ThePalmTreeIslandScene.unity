@@ -223,7 +223,7 @@ GameObject:
   - component: {fileID: 906235543}
   m_Layer: 0
   m_Name: PalmIsland
-  m_TagString: Untagged
+  m_TagString: Ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2687,13 +2687,16 @@ GameObject:
   - component: {fileID: 1654383948}
   - component: {fileID: 1654383947}
   - component: {fileID: 1654383951}
+  - component: {fileID: 1654383954}
+  - component: {fileID: 1654383956}
   - component: {fileID: 1654383953}
   - component: {fileID: 1654383950}
   - component: {fileID: 1654383949}
   - component: {fileID: 1654383952}
+  - component: {fileID: 1654383955}
   m_Layer: 0
   m_Name: Captain Clown Nose
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2803,10 +2806,10 @@ Rigidbody2D:
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
-  m_Mass: 1
+  m_Mass: 10
   m_LinearDrag: 0
   m_AngularDrag: 0.05
-  m_GravityScale: 1
+  m_GravityScale: 5
   m_Material: {fileID: 0}
   m_Interpolate: 0
   m_SleepingMode: 1
@@ -2824,8 +2827,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff74aabcf4b08b540b94cd5874b3cfe1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hSpeed: 7
+  playerStats: {fileID: 11400000, guid: 1260bef647a04874495dd51ff6aa94a0, type: 2}
   playerAnimationController: {fileID: 1654383953}
+  playerHorizontalMove: {fileID: 1654383954}
 --- !u!95 &1654383952
 Animator:
   serializedVersion: 4
@@ -2859,3 +2863,54 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   animator: {fileID: 1654383952}
+--- !u!114 &1654383954
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1654383946}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ecb747fef0e35094080d9c334b4f571b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rigidbody2d: {fileID: 1654383950}
+--- !u!61 &1654383955
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1654383946}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: -0.035452843, y: -1.1723032}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 6.4, y: 4}
+    newSize: {x: 4, y: 2.5}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 1.464735, y: 0.32187462}
+  m_EdgeRadius: 0
+--- !u!114 &1654383956
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1654383946}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d3b3f9ae91922a144bf5d7510034a5fa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

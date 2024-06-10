@@ -1,46 +1,81 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using osaro.utilities;
+using System;
+using osaro.player.constant;
+using osaro.utilities.Constants;
 
-public class PlayerController : MonoBehaviour
+namespace osaro.player
 {
-
-    [SerializeField] private float hSpeed = 5f;
-    [SerializeField] private AnimationController playerAnimationController;
-
-
-    private float _direction = 1;
-    private Rigidbody2D _playerRigidBody;
-
-    private void Awake()
+    public class PlayerController : MonoBehaviour
     {
-        _playerRigidBody = GetComponent<Rigidbody2D>();
-    }
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+        // scriptableObjects 
+        [SerializeField] private PlayerStats playerStats;
 
-    // Update is called once per frame
-    void Update()
-    {
-        float horizontalInput = Input.GetAxisRaw("Horizontal");
 
-        if (horizontalInput != 0) _direction = Mathf.Sign(horizontalInput);
+        [SerializeField] private AnimationController playerAnimationController;
+        [SerializeField] private HorizontalMove playerHorizontalMove;
 
-        _playerRigidBody.velocity = new Vector2(horizontalInput * hSpeed, _playerRigidBody.velocity.y);
+        private IsOnCollision _playerIsOnCollisionWith;
 
-        if(horizontalInput == 0)
+
+
+        private float _direction = 1;
+
+        private bool _isGrounded;
+
+        private void Awake()
         {
-            playerAnimationController.ChangeCurrentAnimation("Idle");
-        }
-        else
-        {
-            playerAnimationController.ChangeCurrentAnimation("Run");
+            _playerIsOnCollisionWith = GetComponent<IsOnCollision>();
         }
 
-        transform.localScale = new Vector3(_direction, 1, 1);
+        // Update is called once per frame
+        void Update()
+        {
+            ApplyMovement();
+            ApplyJump();
+        }
+
+        private void ApplyJump() {
+
+            _isGrounded = _playerIsOnCollisionWith.With(GameConstants.GROUND);
+
+            if(Input.GetButtonDown(PlayerConstantValues.JUMP) && _isGrounded)
+            {
+                playerHorizontalMove.Jump(playerStats.jumpForce);
+            }
+        }
+
+        private void ApplyMovement()
+        {
+            float horizontalInput = Input.GetAxisRaw(PlayerConstantValues.HORIZONTAL);
+
+            if (horizontalInput != 0) _direction = Mathf.Sign(horizontalInput);
+
+            HandleMovement(horizontalInput);
+            HandleAnimation(horizontalInput);
+            ChangeDirection();
+        }
+
+        private void HandleMovement(float horizontalInput)
+        {
+            playerHorizontalMove.Move(horizontalInput, playerStats.hSeed);
+        }
+
+        private void HandleAnimation(float horizontalInput)
+        {
+            string newAnimation = horizontalInput == 0 ?
+                PlayerAnimationStirng.IDLE : PlayerAnimationStirng.RUN;
+
+            playerAnimationController.ChangeCurrentAnimation(newAnimation);
+
+        }
+        private void ChangeDirection()
+        {
+            transform.localScale = new Vector3(_direction, 1, 1);
+        }
     }
+
 }
