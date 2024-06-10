@@ -2829,7 +2829,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerStats: {fileID: 11400000, guid: 1260bef647a04874495dd51ff6aa94a0, type: 2}
   playerAnimationController: {fileID: 1654383953}
-  playerHorizontalMove: {fileID: 1654383954}
+  playerMovement: {fileID: 1654383954}
 --- !u!95 &1654383952
 Animator:
   serializedVersion: 4

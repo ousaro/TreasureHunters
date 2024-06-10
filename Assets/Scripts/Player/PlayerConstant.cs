@@ -1,10 +1,12 @@
 ﻿namespace osaro.player.constant
 {
-    public static class PlayerAnimationStirng
+    public static class PlayerAnimationString
     {
         
         public const string IDLE = "Idle";
         public const string RUN = "Run";
+        public const string JUMP = "Jump";
+        public const string FALL = "Fall";
 
     }
 

@@ -8,15 +8,19 @@ namespace osaro.utilities
     public class AnimationController : MonoBehaviour
     {
 
-        [SerializeField] private Animator animator;
+        private Animator _animator;
 
         private string _currentAnimation;
 
+        private void Awake()
+        {
+            _animator = GetComponent<Animator>();
+        }
         public void ChangeCurrentAnimation(string newAnimation)
         {
             if (newAnimation == _currentAnimation) { return; }
 
-            animator.Play(newAnimation);
+            _animator.Play(newAnimation);
             _currentAnimation = newAnimation;
         }
     }
