@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using UnityEngine;
 
-namespace osaro.utilities
+namespace Osaro.Utilities
 {
     public class AnimationController : MonoBehaviour
     {

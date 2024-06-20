@@ -1,4 +1,4 @@
-﻿namespace osaro.utilities.Constants
+﻿namespace Osaro.Utilities.Constants
 {
     public static class GameConstants
     {

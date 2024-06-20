@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace osaro.player
+namespace Osaro.player
 {
     [CreateAssetMenu(fileName ="PlayerStats", menuName ="ScriptableObjects/PlayerStats")]
     public class PlayerStats: ScriptableObject

@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace osaro.utilities
+namespace Osaro.Utilities
 {
     public class IsOnCollision : MonoBehaviour
     {

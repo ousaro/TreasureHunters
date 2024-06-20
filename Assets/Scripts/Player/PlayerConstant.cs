@@ -1,4 +1,4 @@
-﻿namespace osaro.player.constant
+﻿namespace Osaro.player.constant
 {
     public static class PlayerAnimationString
     {

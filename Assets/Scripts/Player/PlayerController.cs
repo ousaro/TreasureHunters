@@ -1,24 +1,26 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using osaro.utilities;
+using Osaro.Utilities;
 using System;
-using osaro.player.constant;
-using osaro.utilities.Constants;
+using Osaro.player.constant;
+using Osaro.Utilities.Constants;
 
-namespace osaro.player
+namespace Osaro.player
 {
     public class PlayerController : MonoBehaviour
     {
         // ScriptableObjects
         [SerializeField] private PlayerStats playerStats;
+
+
         [SerializeField] private AnimationController playerAnimationController;
         [SerializeField] private CharacterMovement playerMovement;
 
         
         private IsOnCollision _playerIsOnCollision;
 
-        private float _direction = 1;
+        private float _direction = 1; //facing right;
         private bool _isGrounded;
 
         private void Awake()
@@ -44,7 +46,10 @@ namespace osaro.player
                 _direction = Mathf.Sign(horizontalInput);
             }
 
-            HandleMovement(horizontalInput);
+            Vector2 newPostion = new Vector2(horizontalInput * playerStats.hSpeed, 
+                playerMovement.Rigidbody2D.velocity.y);
+
+            HandleMovement(newPostion);
             HandleAnimation(horizontalInput);
             ChangeDirection();
         }
@@ -52,9 +57,9 @@ namespace osaro.player
 
 
         // Moves the player
-        private void HandleMovement(float horizontalInput)
+        private void HandleMovement(Vector2 newPosition)
         {
-            playerMovement.Move(horizontalInput, playerStats.hSpeed);
+            playerMovement.MoveToward(newPosition);
         }
 
         // Changes the player's facing direction

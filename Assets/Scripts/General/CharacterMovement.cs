@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace osaro.utilities
+namespace Osaro.Utilities
 {
     public class CharacterMovement : MonoBehaviour
     {
@@ -12,8 +12,8 @@ namespace osaro.utilities
             Rigidbody2D = GetComponent<Rigidbody2D>();
         }
 
-        // Method to move the player horizontally
-        public void Move(float horizontalInput, float hSpeed)
+        // Method to make the character move toward a position
+        public void MoveToward(Vector2 newPosition) 
         {
             if (Rigidbody2D == null)
             {
@@ -21,7 +21,7 @@ namespace osaro.utilities
                 return;
             }
 
-            Rigidbody2D.velocity = new Vector2(horizontalInput * hSpeed, Rigidbody2D.velocity.y);
+            Rigidbody2D.velocity = new Vector2(newPosition.x, newPosition.y);
         }
 
         // Method to make the player jump
