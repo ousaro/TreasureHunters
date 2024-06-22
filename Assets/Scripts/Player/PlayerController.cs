@@ -10,6 +10,8 @@ namespace Osaro.player
 {
     public class PlayerController : MonoBehaviour
     {
+
+        public static PlayerController Instance;
         // ScriptableObjects
         [SerializeField] private PlayerStats playerStats;
 
@@ -26,6 +28,11 @@ namespace Osaro.player
         private void Awake()
         {
             _playerIsOnCollision = GetComponent<IsOnCollision>();
+
+        }
+
+        private void Start() {
+            Instance = this;
         }
 
         // Update is called once per frame
@@ -59,7 +66,7 @@ namespace Osaro.player
         // Moves the player
         private void HandleMovement(Vector2 newPosition)
         {
-            playerMovement.MoveToward(newPosition);
+            playerMovement.Move(newPosition);
         }
 
         // Changes the player's facing direction
