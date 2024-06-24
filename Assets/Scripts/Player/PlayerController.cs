@@ -8,118 +8,158 @@ using Osaro.Utilities.Constants;
 
 namespace Osaro.player
 {
+    
     public class PlayerController : MonoBehaviour
     {
-
         public static PlayerController Instance;
-        // ScriptableObjects
-        [SerializeField] private PlayerStats playerStats;
 
+        [SerializeField] private float attackDuration;
+        [SerializeField] private float timeBetweenAttacks;
+        public enum PlayerState { Idle, Running, Attacking, Jumping, Falling };
+        private PlayerState _playerState;
 
-        [SerializeField] private AnimationController playerAnimationController;
-        [SerializeField] private CharacterMovement playerMovement;
+        private bool _isAlreadyAttacked;
 
-        
-        private IsOnCollision _playerIsOnCollision;
-
-        private float _direction = 1; //facing right;
-        private bool _isGrounded;
+        public bool IsFalling { get; set; }
+        public bool IsGrounded { get; set; }
 
         private void Awake()
         {
-            _playerIsOnCollision = GetComponent<IsOnCollision>();
-
-        }
-
-        private void Start() {
             Instance = this;
         }
 
-        // Update is called once per frame
-        void Update()
+        private void Start()
         {
-            ApplyMovement();
-            ApplyJump();
+            _playerState = PlayerState.Idle;
+            _isAlreadyAttacked = false;
+            EventManager.OnAttackEnd += OnAttackEnd;
         }
 
-
-        // Handles horizontal movement and animation
-        private void ApplyMovement()
+        private void OnDestroy()
         {
-            float horizontalInput = Input.GetAxisRaw(PlayerConstantValues.HORIZONTAL);
+            EventManager.OnAttackEnd -= OnAttackEnd;
+        }
 
-            if (horizontalInput != 0)
+        private void Update()
+        {
+            PlayerStateLogic();
+        }
+
+        private void PlayerStateLogic()
+        {
+            switch (_playerState)
             {
-                _direction = Mathf.Sign(horizontalInput);
+                case PlayerState.Idle:
+                    IdleStateHandler();
+                    break;
+                case PlayerState.Running:
+                    RunningStateHandler();
+                    break;
+                case PlayerState.Jumping:
+                    JumpingStateHandler();
+                    break;
+                case PlayerState.Falling:
+                    FallingStateHandler();
+                    break;
+                case PlayerState.Attacking:
+                    AttackingStateHandler();
+                    break;
             }
-
-            Vector2 newPostion = new Vector2(horizontalInput * playerStats.hSpeed, 
-                playerMovement.Rigidbody2D.velocity.y);
-
-            HandleMovement(newPostion);
-            HandleAnimation(horizontalInput);
-            ChangeDirection();
         }
 
-
-
-        // Moves the player
-        private void HandleMovement(Vector2 newPosition)
+        private void IdleStateHandler()
         {
-            playerMovement.Move(newPosition);
-        }
-
-        // Changes the player's facing direction
-        private void ChangeDirection()
-        {
-            transform.localScale = new Vector3(_direction, 1, 1);
-        }
-
-        // Handles jumping logic
-        private void ApplyJump()
-        {
-            _isGrounded = IsGrounded();
-
-            if (!CanJump()) { return; }
-
-            playerMovement.Jump(playerStats.jumpForce);
-
-
-        }
-        // Determines if the player can jump
-        private bool CanJump()
-        {
-            return Input.GetButtonDown(PlayerConstantValues.JUMP) && _isGrounded;
-        }
-
-        // Checks if the player is grounded
-        private bool IsGrounded()
-        {
-            return _playerIsOnCollision.With(GameConstants.GROUND);
-        }
-
-
-        // Changes the player animation
-        private void HandleAnimation(float horizontalInput)
-        {
-            string newAnimation = PlayerAnimationString.IDLE;
-            // Determine animation based on movement and jump status
-            if (_isGrounded)
+            if (Input.GetAxisRaw(PlayerConstantValues.HORIZONTAL) != 0)
             {
-                newAnimation = horizontalInput == 0 ? PlayerAnimationString.IDLE : PlayerAnimationString.RUN;
-
+                _playerState = PlayerState.Running;
+                EventManager.TriggerMove();
             }
-            else if(!_isGrounded && playerMovement.Rigidbody2D.velocity.y<=0)
+            else if (Input.GetButtonDown(PlayerConstantValues.FIRE))
             {
-                
-                newAnimation = PlayerAnimationString.FALL;
+
+                if (_isAlreadyAttacked)
+                {
+                    return;
+                }
+                _playerState = PlayerState.Attacking;
+                _isAlreadyAttacked = true;
+
+                EventManager.TriggerAttack();
+            }
+            else if (Input.GetButtonDown(PlayerConstantValues.JUMP))
+            {
+                _playerState = PlayerState.Jumping;
+                EventManager.TriggerJump();
             }
             else
             {
-                newAnimation = PlayerAnimationString.JUMP;
+                EventManager.TriggerIdle();
             }
+        }
 
-            playerAnimationController.ChangeCurrentAnimation(newAnimation);
+        private void RunningStateHandler()
+        {
+            if (Input.GetAxisRaw(PlayerConstantValues.HORIZONTAL) == 0)
+            {
+                _playerState = PlayerState.Idle;
+                EventManager.TriggerIdle();
+            }
+            else if (Input.GetButtonDown(PlayerConstantValues.JUMP))
+            {
+                _playerState = PlayerState.Jumping;
+                EventManager.TriggerJump();
+            }
+            else if (Input.GetButtonDown(PlayerConstantValues.FIRE))
+            {
+                if(_isAlreadyAttacked)
+                {
+                    return;
+                }
+                _playerState = PlayerState.Attacking;
+                _isAlreadyAttacked = true;
+                EventManager.TriggerAttack();
+            }
+        }
+
+        private void JumpingStateHandler()
+        {
+            if (IsFalling)
+            {
+                _playerState = PlayerState.Falling;
+                EventManager.TriggerFall();
+            }
+        }
+
+        private void FallingStateHandler()
+        {
+            if (IsGrounded)
+            {
+                _playerState = PlayerState.Idle;
+                EventManager.TriggerIdle();
+            }
+        }
+
+        private void AttackingStateHandler()
+        {
+            // Prevent further state changes while attacking
+            StartCoroutine(AttackCoroutine());
+        }
+
+        private IEnumerator AttackCoroutine()
+        {
+            // Wait for the attack duration
+            yield return new WaitForSeconds(attackDuration);
+
+            // End attack state and reset flag
+            _playerState = PlayerState.Idle;
+
+            yield return new WaitForSeconds(timeBetweenAttacks) ;
+            EventManager.TriggerAttackEnd();
+        }
+
+        private void OnAttackEnd()
+        {
+            _isAlreadyAttacked = false;
         }
 
 
