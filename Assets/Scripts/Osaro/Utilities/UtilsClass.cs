@@ -1,9 +1,11 @@
-﻿using UnityEngine;
+﻿using Osaro.Enemy;
+using UnityEngine;
 
 namespace Osaro.Utilities
 {
     public static partial class UtilsClass
     {
+
 
         // Generate a random position within the defined range
         public static Vector3 GetRandomDirection()
@@ -11,14 +13,11 @@ namespace Osaro.Utilities
             return new Vector3(UnityEngine.Random.Range(-1f, 1f), UnityEngine.Random.Range(-1f, 1f)).normalized;
         }
 
-        public static Vector3 GetRandomDirectionX()
+        public static Vector3 CalculateDirection(Vector3 currentPosition, Vector3 target)
         {
-            return new Vector3(UnityEngine.Random.Range(-1f, 1f), 0, 0).normalized;
-        }
+            Vector3 direction = (target - currentPosition).normalized;
 
-        public static Vector3 GetRandomPositionX(Vector3 initialPosition, int minVal, int maxVal)
-        {
-            return initialPosition + GetRandomDirectionX() * UnityEngine.Random.Range(minVal, maxVal);
+            return direction;
         }
 
         public static Vector3 GetRandomPosition(Vector3 initialPosition, int minVal, int maxVal)

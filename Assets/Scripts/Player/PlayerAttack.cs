@@ -7,14 +7,16 @@ namespace Osaro.player
 {
     public  class  PlayerAttack : MonoBehaviour
     {
+        [SerializeField] private EventManager playerEventManager;
         private void OnEnable()
         {
-            EventManager.OnAttack += ApplyAttack;
+
+            playerEventManager.StartListening(PlayerEventsString.ON_ATTACK, ApplyAttack);
         }
 
         private void OnDisable()
         {
-            EventManager.OnAttack -= ApplyAttack;
+            playerEventManager.StopListening(PlayerEventsString.ON_ATTACK, ApplyAttack);
         }
         public void ApplyAttack()
         {

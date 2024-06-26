@@ -1,45 +1,94 @@
 ﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Osaro.Utilities
 {
-    public static class EventManager
+    public class EventManager : MonoBehaviour
     {
-        public static event Action OnAttack;
-        public static event Action OnJump;
-        public static event Action OnMove;
-        public static event Action OnIdle;
-        public static event Action OnFall;
-        public static event Action OnAttackEnd;
 
-        public static void TriggerAttackEnd()
-        {
-            OnAttackEnd?.Invoke();
-        }
-        public static void TriggerAttack()
-        {
-            OnAttack?.Invoke();
-        }
 
-        public static void TriggerJump()
+        private  Dictionary<string, Delegate> eventDictionary = new Dictionary<string, Delegate>();
+
+        // For parameterless events
+        public  void StartListening(string eventName, Action listener)
         {
-            OnJump?.Invoke();
+            if (eventDictionary.TryGetValue(eventName, out Delegate thisEvent))
+            {
+                thisEvent = Delegate.Combine(thisEvent, listener);
+                eventDictionary[eventName] = thisEvent;
+            }
+            else
+            {
+                thisEvent = listener;
+                eventDictionary.Add(eventName, thisEvent);
+            }
         }
 
-        public static void TriggerMove()
+        public  void StopListening(string eventName, Action listener)
         {
-            OnMove?.Invoke();
+            if (eventDictionary.TryGetValue(eventName, out Delegate thisEvent))
+            {
+                thisEvent = Delegate.Remove(thisEvent, listener);
+                if (thisEvent == null)
+                {
+                    eventDictionary.Remove(eventName);
+                }
+                else
+                {
+                    eventDictionary[eventName] = thisEvent;
+                }
+            }
         }
 
-        public static void TriggerIdle()
+        public  void TriggerEvent(string eventName)
         {
-            OnIdle?.Invoke();
+            if (eventDictionary.TryGetValue(eventName, out Delegate thisEvent))
+            {
+                (thisEvent as Action)?.Invoke();
+            }
         }
 
-        public static void TriggerFall()
+        // For parameterized events
+        public  void StartListening<T>(string eventName, Action<T> listener)
         {
-            OnFall?.Invoke();
+            if (eventDictionary.TryGetValue(eventName, out Delegate thisEvent))
+            {
+                thisEvent = Delegate.Combine(thisEvent, listener);
+                eventDictionary[eventName] = thisEvent;
+            }
+            else
+            {
+                thisEvent = listener;
+                eventDictionary.Add(eventName, thisEvent);
+            }
         }
+
+        public  void StopListening<T>(string eventName, Action<T> listener)
+        {
+            if (eventDictionary.TryGetValue(eventName, out Delegate thisEvent))
+            {
+                thisEvent = Delegate.Remove(thisEvent, listener);
+                if (thisEvent == null)
+                {
+                    eventDictionary.Remove(eventName);
+                }
+                else
+                {
+                    eventDictionary[eventName] = thisEvent;
+                }
+            }
+        }
+
+        public  void TriggerEvent<T>(string eventName, T param)
+        {
+            if (eventDictionary.TryGetValue(eventName, out Delegate thisEvent))
+            {
+                (thisEvent as Action<T>)?.Invoke(param);
+            }
+        }
+
+       
     }
 
 }

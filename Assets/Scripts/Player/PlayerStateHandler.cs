@@ -9,9 +9,11 @@ using Osaro.Utilities.Constants;
 namespace Osaro.player
 {
     
-    public class PlayerController : MonoBehaviour
+    public class PlayerStateHandler : MonoBehaviour
     {
-        public static PlayerController Instance;
+        public static PlayerStateHandler Instance;
+
+        [SerializeField] private EventManager playerEventManager;
 
         [SerializeField] private float attackDuration;
         [SerializeField] private float timeBetweenAttacks;
@@ -32,17 +34,14 @@ namespace Osaro.player
         {
             _playerState = PlayerState.Idle;
             _isAlreadyAttacked = false;
-            EventManager.OnAttackEnd += OnAttackEnd;
+          
         }
 
-        private void OnDestroy()
-        {
-            EventManager.OnAttackEnd -= OnAttackEnd;
-        }
 
         private void Update()
         {
             PlayerStateLogic();
+           
         }
 
         private void PlayerStateLogic()
@@ -72,7 +71,8 @@ namespace Osaro.player
             if (Input.GetAxisRaw(PlayerConstantValues.HORIZONTAL) != 0)
             {
                 _playerState = PlayerState.Running;
-                EventManager.TriggerMove();
+                playerEventManager.TriggerEvent(PlayerEventsString.ON_MOVE);
+               
             }
             else if (Input.GetButtonDown(PlayerConstantValues.FIRE))
             {
@@ -84,16 +84,16 @@ namespace Osaro.player
                 _playerState = PlayerState.Attacking;
                 _isAlreadyAttacked = true;
 
-                EventManager.TriggerAttack();
+                playerEventManager.TriggerEvent(PlayerEventsString.ON_ATTACK);
             }
             else if (Input.GetButtonDown(PlayerConstantValues.JUMP))
             {
                 _playerState = PlayerState.Jumping;
-                EventManager.TriggerJump();
+                playerEventManager.TriggerEvent(PlayerEventsString.ON_JUMP);
             }
             else
             {
-                EventManager.TriggerIdle();
+                playerEventManager.TriggerEvent(PlayerEventsString.ON_IDLE);
             }
         }
 
@@ -102,12 +102,12 @@ namespace Osaro.player
             if (Input.GetAxisRaw(PlayerConstantValues.HORIZONTAL) == 0)
             {
                 _playerState = PlayerState.Idle;
-                EventManager.TriggerIdle();
+                playerEventManager.TriggerEvent(PlayerEventsString.ON_IDLE);
             }
             else if (Input.GetButtonDown(PlayerConstantValues.JUMP))
             {
                 _playerState = PlayerState.Jumping;
-                EventManager.TriggerJump();
+                playerEventManager.TriggerEvent(PlayerEventsString.ON_JUMP);
             }
             else if (Input.GetButtonDown(PlayerConstantValues.FIRE))
             {
@@ -117,8 +117,8 @@ namespace Osaro.player
                 }
                 _playerState = PlayerState.Attacking;
                 _isAlreadyAttacked = true;
-                EventManager.TriggerAttack();
-            }
+                playerEventManager.TriggerEvent(PlayerEventsString.ON_ATTACK);
+            }       
         }
 
         private void JumpingStateHandler()
@@ -126,7 +126,7 @@ namespace Osaro.player
             if (IsFalling)
             {
                 _playerState = PlayerState.Falling;
-                EventManager.TriggerFall();
+                playerEventManager.TriggerEvent(PlayerEventsString.ON_FALL);
             }
         }
 
@@ -135,7 +135,7 @@ namespace Osaro.player
             if (IsGrounded)
             {
                 _playerState = PlayerState.Idle;
-                EventManager.TriggerIdle();
+                playerEventManager.TriggerEvent(PlayerEventsString.ON_IDLE);
             }
         }
 
@@ -154,14 +154,14 @@ namespace Osaro.player
             _playerState = PlayerState.Idle;
 
             yield return new WaitForSeconds(timeBetweenAttacks) ;
-            EventManager.TriggerAttackEnd();
-        }
-
-        private void OnAttackEnd()
-        {
             _isAlreadyAttacked = false;
         }
 
+
+        public Vector3 GetPosition()
+        {
+            return transform.position;
+        }
 
     }
 }

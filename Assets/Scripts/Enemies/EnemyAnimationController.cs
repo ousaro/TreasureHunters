@@ -1,5 +1,6 @@
 ﻿using Osaro.Enemy.Constrants;
 using Osaro.Utilities;
+using System;
 using UnityEngine;
 
 namespace Osaro.Enemy
@@ -8,45 +9,54 @@ namespace Osaro.Enemy
     {
 
         [SerializeField] private AnimationController enemyAnimationController;
-        [SerializeField] private GameObject enemyGFX;
+        [SerializeField] private EventManager enemyEventManager;
 
-        private Rigidbody2D _enemyRigidbody2d;
-        private float _direction = 1; //left
 
-        private void Awake()
+
+        private string _newAnimation;
+
+        private void OnEnable()
         {
-            _enemyRigidbody2d = GetComponent<Rigidbody2D>();
+            enemyEventManager.StartListening(EnemyEventString.ON_ATTACK, AttackAnimationHandler);
+            enemyEventManager.StartListening(EnemyEventString.ON_MOVE, RunAnimationHandler);
+            enemyEventManager.StartListening(EnemyEventString.ON_IDLE, IdleAnimationHandler);
+         
         }
 
+        private void OnDisable()
+        {
+            enemyEventManager.StopListening(EnemyEventString.ON_ATTACK, AttackAnimationHandler);
+            enemyEventManager.StopListening(EnemyEventString.ON_MOVE, RunAnimationHandler);
+            enemyEventManager.StopListening(EnemyEventString.ON_IDLE, IdleAnimationHandler);
+        }
+    
         private void Update()
         {
             HandleAnimation();
-            ChangeDirection();
         }
+
+
+        private void IdleAnimationHandler()
+        {
+            _newAnimation = EnemyAnimationString.IDLE;
+        }
+
+        private void RunAnimationHandler()
+        {
+            _newAnimation = EnemyAnimationString.RUN;
+        }
+
+        private void AttackAnimationHandler()
+        {
+            _newAnimation = EnemyAnimationString.ATTACK;
+        }
+
         private void HandleAnimation()
         {
-            string newAnimation = EnemyAnimationString.IDLE;
-
-            if (_enemyRigidbody2d.velocity.x != 0)
-            {
-                newAnimation = EnemyAnimationString.RUN;
-            }
-            else
-            {
-                newAnimation = EnemyAnimationString.IDLE;
-            }
-
-
-
-            enemyAnimationController.ChangeCurrentAnimation(newAnimation);
+            enemyAnimationController.ChangeCurrentAnimation(_newAnimation);
         }
 
-
-        private void ChangeDirection()
-        {
-            _direction = -Mathf.Sign(_enemyRigidbody2d.velocity.x);
-            enemyGFX.transform.localScale = new Vector3(_direction, 1, 1);
-        }
+       
 
     }
 

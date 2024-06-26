@@ -4,6 +4,7 @@ using Osaro.Enemy.Constrants;
 using Osaro.Utilities;
 using Osaro.player;
 using Osaro.Utilities.Constants;
+using System.Collections;
 
 namespace Osaro.Enemy
 {
@@ -13,13 +14,11 @@ namespace Osaro.Enemy
     public class EnemyAI : MonoBehaviour
     {
         [SerializeField] private EnemyStats enemyStats;
-        [SerializeField] private EnemyStateHandler stateHandler;
+        [SerializeField] private EventManager enemyEventManager;
 
         private Rigidbody2D _enemyRigidbody2D;
 
-        [SerializeField] private Vector2 followPlayerRange = Vector2.one;
-        [SerializeField] private Transform target;
-        [SerializeField] private Transform patrolPosition1;
+       
         private Vector2 _velocity;
         private Vector3 _currentTarget;
 
@@ -27,21 +26,51 @@ namespace Osaro.Enemy
         private Path _path;
         private int _currentWayPoint = 0;
         private Seeker _seeker;
+        private bool _isAttacking;
+
+        private void OnEnable()
+        {
+            enemyEventManager.StartListening(EnemyEventString.ON_ATTACK, OnAttackHandler);
+            //EventManager.StartListening<Vector3>(EnemyEventString.ON_NEW_TARGET, OnNewTarget);
+          
+        }
+        private void OnDisable()
+        {
+            enemyEventManager.StopListening(EnemyEventString.ON_ATTACK, StopMovement);
+            //EventManager.StopListening<Vector3>(EnemyEventString.ON_NEW_TARGET, OnNewTarget);
+        }
 
         private void Awake()
         {
             _seeker = GetComponent<Seeker>();
             _enemyRigidbody2D = GetComponent<Rigidbody2D>();    
 
-            stateHandler.Initialize(transform.position, patrolPosition1, target, followPlayerRange, _enemyRigidbody2D);
-            stateHandler.OnNewTarget += OnNewTarget;
-
             InvokeRepeating("UpdatePathInvoker", 0f, .5f);
         }
 
+        private void OnAttackHandler()
+        {
+            StopMovement();
+            StartCoroutine(AttackCoroutine(1f));
+        }
+
+        IEnumerator AttackCoroutine(float attackDuration)
+        {
+            _isAttacking = true;
+            yield return new WaitForSeconds(attackDuration);
+            _isAttacking=false;
+        }
         private void OnNewTarget(Vector3 newTarget)
         {
-            _currentTarget = newTarget;
+            if (_isAttacking)
+            {
+                _currentTarget = transform.position;
+            }
+            else
+            {
+
+             _currentTarget = newTarget;
+            }
         }
 
         // Parameterless method for InvokeRepeating
@@ -95,6 +124,11 @@ namespace Osaro.Enemy
         public void Move(Vector2 newPosition)
         {
             _enemyRigidbody2D.velocity = new Vector2(newPosition.x, newPosition.y);
+        }
+
+        public void StopMovement()
+        {
+            _enemyRigidbody2D.velocity += Vector2.zero;
         }
 
         private Vector3 CalculateNewPosition()

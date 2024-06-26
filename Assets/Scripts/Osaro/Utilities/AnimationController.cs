@@ -25,6 +25,11 @@ namespace Osaro.Utilities
             UpdateAnimationDuration();
         }
 
+        public void InstantiateVFX(GameObject vfxObjext)
+        {
+            Instantiate(vfxObjext,transform.position,Quaternion.identity);
+        }
+
         private void UpdateAnimationDuration()
         {
             // Get the runtime animator controller

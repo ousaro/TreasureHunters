@@ -7,25 +7,28 @@ namespace Osaro.player
     public class PlayerAnimationHandler : MonoBehaviour
     {
         [SerializeField] private AnimationController playerAnimationController;
+        [SerializeField] private EventManager playerEventManager;
 
         private string _newAnimation = PlayerAnimationString.IDLE;
 
         private void OnEnable()
         {
-            EventManager.OnAttack += OnAttack_HandleAnimation;
-            EventManager.OnJump += OnJump_HandleAnimation;
-            EventManager.OnMove += OnMove_HandleAnimation;
-            EventManager.OnIdle += OnIdle_HandleAnimation;
-            EventManager.OnFall += OnFall_HandleAnimation;
+            playerEventManager.StartListening(PlayerEventsString.ON_IDLE, OnIdle_HandleAnimation);
+            playerEventManager.StartListening(PlayerEventsString.ON_MOVE, OnMove_HandleAnimation);
+            playerEventManager.StartListening(PlayerEventsString.ON_JUMP, OnJump_HandleAnimation);
+            playerEventManager.StartListening(PlayerEventsString.ON_FALL, OnFall_HandleAnimation);
+            playerEventManager.StartListening(PlayerEventsString.ON_ATTACK, OnAttack_HandleAnimation);
+
         }
 
         private void OnDisable()
         {
-            EventManager.OnAttack -= OnAttack_HandleAnimation;
-            EventManager.OnJump -= OnJump_HandleAnimation;
-            EventManager.OnMove -= OnMove_HandleAnimation;
-            EventManager.OnIdle -= OnIdle_HandleAnimation;
-            EventManager.OnFall -= OnFall_HandleAnimation;
+
+            playerEventManager.StopListening(PlayerEventsString.ON_IDLE, OnIdle_HandleAnimation);
+            playerEventManager.StopListening(PlayerEventsString.ON_MOVE, OnMove_HandleAnimation);
+            playerEventManager.StopListening(PlayerEventsString.ON_JUMP, OnJump_HandleAnimation);
+            playerEventManager.StopListening(PlayerEventsString.ON_FALL, OnFall_HandleAnimation);
+            playerEventManager.StopListening(PlayerEventsString.ON_ATTACK, OnAttack_HandleAnimation);
         }
 
         private void Update()

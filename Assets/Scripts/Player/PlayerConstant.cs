@@ -17,4 +17,17 @@
         public const string JUMP = "Jump";
         public const string FIRE = "Fire1";
     }
+
+    public static class PlayerEventsString
+    {
+
+        public const string ON_IDLE = "OnIdle";
+        public const string ON_MOVE = "OnMove";
+        public const string ON_JUMP = "OnJump";
+        public const string ON_FALL = "OnFall";
+        public const string ON_ATTACK = "OnAttack";
+      
+
+
+    }
 }

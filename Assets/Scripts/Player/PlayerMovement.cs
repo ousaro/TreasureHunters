@@ -8,24 +8,29 @@ namespace Osaro.player
 {
     public class PlayerMovement : MonoBehaviour
     {
-        [SerializeField] private PlayerStats playerStats; 
+
+
+        [SerializeField] private PlayerStats playerStats;
+        [SerializeField] private EventManager playerEventManager;
         private Rigidbody2D _playerRigidBody2D;
         private IsOnCollision _playerIsOnCollision;
 
         private void OnEnable()
         {
-            EventManager.OnJump += ApplyJump;
-            EventManager.OnMove += ApplyMovement;
-            EventManager.OnIdle += StopMovement;
-            EventManager.OnFall += HandleFall;
+           playerEventManager.StartListening(PlayerEventsString.ON_IDLE, StopMovement);
+           playerEventManager.StartListening(PlayerEventsString.ON_MOVE, ApplyMovement);
+           playerEventManager.StartListening(PlayerEventsString.ON_JUMP, ApplyJump);
+           playerEventManager.StartListening(PlayerEventsString.ON_FALL, HandleFall);
+           
         }
 
         private void OnDisable()
         {
-            EventManager.OnJump -= ApplyJump;
-            EventManager.OnMove -= ApplyMovement;
-            EventManager.OnIdle -= StopMovement;
-            EventManager.OnFall -= HandleFall;
+            playerEventManager.StopListening(PlayerEventsString.ON_IDLE, StopMovement);
+            playerEventManager.StopListening(PlayerEventsString.ON_MOVE, ApplyMovement);
+            playerEventManager.StopListening(PlayerEventsString.ON_JUMP, ApplyJump);
+            playerEventManager.StopListening(PlayerEventsString.ON_FALL, HandleFall);
+
         }
         private void Awake()
         {
@@ -35,8 +40,8 @@ namespace Osaro.player
 
         private void Update()
         {
-            PlayerController.Instance.IsFalling = IsFalling();
-            PlayerController.Instance.IsGrounded = IsGrounded();
+            PlayerStateHandler.Instance.IsFalling = IsFalling();
+            PlayerStateHandler.Instance.IsGrounded = IsGrounded();
         }
 
         public void ApplyMovement()
