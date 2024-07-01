@@ -25,6 +25,7 @@ namespace Osaro.Enemy.Constrants
         public const string ON_ROAM = "OnRoam_Enemy";
         public const string ON_CHASE = "OnChase_Enemy";
         public const string ON_BACK_TO_ORIGIN = "OnBackToOrigin_Enemy";
+        public const string ON_HEALTH_CHANGE = "OnHealthChange_Enemy";
 
     }
 

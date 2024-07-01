@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: PlayerStats
   m_EditorClassIdentifier: 
   hSpeed: 7
-  jumpForce: 150
+  jumpForce: 50
   maxHp: 100

@@ -26,7 +26,9 @@
         public const string ON_JUMP = "OnJump";
         public const string ON_FALL = "OnFall";
         public const string ON_ATTACK = "OnAttack";
-      
+        public const string ON_HEALTH_CHANGE = "OnHealthChange";
+        public const string ON_DEAD = "OnDead";
+
 
 
     }

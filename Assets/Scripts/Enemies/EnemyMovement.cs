@@ -29,6 +29,7 @@ namespace Osaro.Enemy
             enemyEventManager.StartListening(EnemyEventString.ON_CHASE, OnChaseHandler);
             enemyEventManager.StartListening(EnemyEventString.ON_BACK_TO_ORIGIN, OnBackToOrigin);
             enemyEventManager.StartListening(EnemyEventString.ON_ATTACK, OnAttackHandler);
+            enemyEventManager.StartListening(EnemyEventString.ON_DEAD, StopMovement);
         }
 
        
@@ -38,6 +39,7 @@ namespace Osaro.Enemy
             enemyEventManager.StopListening(EnemyEventString.ON_CHASE, OnChaseHandler);
             enemyEventManager.StopListening(EnemyEventString.ON_BACK_TO_ORIGIN, OnBackToOrigin);
             enemyEventManager.StopListening(EnemyEventString.ON_ATTACK, OnAttackHandler);
+            enemyEventManager.StopListening(EnemyEventString.ON_DEAD, StopMovement);
         }
 
 
@@ -118,7 +120,7 @@ namespace Osaro.Enemy
 
         public void StopMovement()
         {
-            _enemyRigidbody2D.velocity += Vector2.zero;
+            _enemyRigidbody2D.velocity = new Vector2(0, _enemyRigidbody2D.velocity.y);
         }
 
 

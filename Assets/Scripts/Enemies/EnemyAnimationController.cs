@@ -1,6 +1,5 @@
 ﻿using Osaro.Enemy.Constrants;
 using Osaro.Utilities;
-using System;
 using UnityEngine;
 
 namespace Osaro.Enemy
@@ -20,7 +19,9 @@ namespace Osaro.Enemy
             enemyEventManager.StartListening(EnemyEventString.ON_ATTACK, AttackAnimationHandler);
             enemyEventManager.StartListening(EnemyEventString.ON_MOVE, RunAnimationHandler);
             enemyEventManager.StartListening(EnemyEventString.ON_IDLE, IdleAnimationHandler);
-         
+            enemyEventManager.StartListening(EnemyEventString.ON_DEAD, DeathAnimationHandler);
+            enemyEventManager.StartListening(EnemyEventString.ON_HEALTH_CHANGE, TakeHitAnimationHandler);
+
         }
 
         private void OnDisable()
@@ -28,13 +29,25 @@ namespace Osaro.Enemy
             enemyEventManager.StopListening(EnemyEventString.ON_ATTACK, AttackAnimationHandler);
             enemyEventManager.StopListening(EnemyEventString.ON_MOVE, RunAnimationHandler);
             enemyEventManager.StopListening(EnemyEventString.ON_IDLE, IdleAnimationHandler);
+            enemyEventManager.StopListening(EnemyEventString.ON_DEAD, DeathAnimationHandler);
+            enemyEventManager.StopListening(EnemyEventString.ON_HEALTH_CHANGE, TakeHitAnimationHandler);
+
         }
-    
+
         private void Update()
         {
             HandleAnimation();
         }
 
+        private void TakeHitAnimationHandler()
+        {
+            _newAnimation = EnemyAnimationString.HIT;  
+        }
+
+        private void DeathAnimationHandler()
+        {
+            _newAnimation = EnemyAnimationString.DEAD;
+        }
 
         private void IdleAnimationHandler()
         {

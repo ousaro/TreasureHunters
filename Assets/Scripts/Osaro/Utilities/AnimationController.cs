@@ -49,4 +49,6 @@ namespace Osaro.Utilities
             AnimationDuration = 0f;
         }
     }
+
+  
 }

@@ -44,6 +44,16 @@ namespace Osaro.player
            
         }
 
+        private void FixedUpdate()
+        {
+            if (IsFalling)
+            {
+                _playerState = PlayerState.Falling;
+                playerEventManager.TriggerEvent(PlayerEventsString.ON_FALL);
+            }
+            
+        }
+
         private void PlayerStateLogic()
         {
             switch (_playerState)
@@ -105,7 +115,7 @@ namespace Osaro.player
                 playerEventManager.TriggerEvent(PlayerEventsString.ON_IDLE);
             }
             else if (Input.GetButtonDown(PlayerConstantValues.JUMP))
-            {
+            {      
                 _playerState = PlayerState.Jumping;
                 playerEventManager.TriggerEvent(PlayerEventsString.ON_JUMP);
             }
@@ -134,8 +144,9 @@ namespace Osaro.player
         {
             if (IsGrounded)
             {
-                _playerState = PlayerState.Idle;
-                playerEventManager.TriggerEvent(PlayerEventsString.ON_IDLE);
+                _playerState = PlayerState.Running;
+                playerEventManager.TriggerEvent(PlayerEventsString.ON_MOVE);
+
             }
         }
 

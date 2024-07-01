@@ -21,7 +21,8 @@ namespace Osaro.player
            playerEventManager.StartListening(PlayerEventsString.ON_MOVE, ApplyMovement);
            playerEventManager.StartListening(PlayerEventsString.ON_JUMP, ApplyJump);
            playerEventManager.StartListening(PlayerEventsString.ON_FALL, HandleFall);
-           
+           playerEventManager.StartListening(PlayerEventsString.ON_ATTACK, StopMovement);
+
         }
 
         private void OnDisable()
@@ -30,6 +31,7 @@ namespace Osaro.player
             playerEventManager.StopListening(PlayerEventsString.ON_MOVE, ApplyMovement);
             playerEventManager.StopListening(PlayerEventsString.ON_JUMP, ApplyJump);
             playerEventManager.StopListening(PlayerEventsString.ON_FALL, HandleFall);
+            playerEventManager.StopListening(PlayerEventsString.ON_ATTACK, StopMovement);
 
         }
         private void Awake()
@@ -42,6 +44,7 @@ namespace Osaro.player
         {
             PlayerStateHandler.Instance.IsFalling = IsFalling();
             PlayerStateHandler.Instance.IsGrounded = IsGrounded();
+
         }
 
         public void ApplyMovement()
@@ -56,7 +59,8 @@ namespace Osaro.player
 
         public void StopMovement()
         {
-            _playerRigidBody2D.velocity = Vector2.zero;
+           
+            _playerRigidBody2D.velocity = new Vector2(0, _playerRigidBody2D.velocity.y);
         }
 
         public void Move(Vector2 newPosition)
@@ -83,9 +87,10 @@ namespace Osaro.player
         {
             // logic here
         }
+ 
         public bool IsFalling()
         {
-            return _playerRigidBody2D.velocity.y <= 0;
+            return _playerRigidBody2D.velocity.y <= -1;
         }
 
         private void ChangeDirection(float horizontalInput)
@@ -103,6 +108,10 @@ namespace Osaro.player
         {
             return _playerIsOnCollision.With(GameConstants.GROUND);
         }
+
+
+
     }
+
 }
 
