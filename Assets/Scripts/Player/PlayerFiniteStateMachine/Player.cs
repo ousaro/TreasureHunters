@@ -39,6 +39,9 @@ public class Player : MonoBehaviour
     #endregion
 
     #region Other Variables
+
+    [SerializeField]
+    private Transform attackPosition;
     public Vector2 CurrentVelocity { get; private set; } 
 
     public int FacingDirection { get; private set; }
@@ -60,7 +63,7 @@ public class Player : MonoBehaviour
         JumpState = new PlayerJumpState(this, StateMachine, playerData, "inAir");
         InAirState = new PlayerInAirState(this, StateMachine, playerData, "inAir");
         LandState = new PlayerLandState(this, StateMachine, playerData, "land");
-        AttackState = new PlayerAttackState(this, StateMachine, playerData, "attack");
+        AttackState = new PlayerAttackState(this, StateMachine, playerData, "attack", attackPosition);
 
 
 
@@ -136,6 +139,14 @@ public class Player : MonoBehaviour
     {
         FacingDirection *= -1;
         transform.localScale= new Vector3(FacingDirection, 1, 1);
+    }
+
+
+    public virtual void OnDrawGizmos()
+    {
+        Gizmos.DrawWireSphere(attackPosition.position, playerData.attackRadius);
+        Gizmos.DrawWireSphere(groundCheck.position, playerData.gourndCheckRadius);
+        
     }
     #endregion
 }

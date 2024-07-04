@@ -9,19 +9,22 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e611c3513326d3c4eaabf9d2d324faf1, type: 3}
-  m_Name: playerData
+  m_Script: {fileID: 11500000, guid: fdd268204d9eb524a8d9fbbf0f6798bf, type: 3}
+  m_Name: Crabby_BaseData
   m_EditorClassIdentifier: 
-  movementVelocity: 10
-  jumpVelocity: 30
-  variableJumpHeightMultiplier: 0.5
-  attackRadius: 1.3
-  damageAmount: 5
-  stunDamageAmount: 1
-  whatIsEnemy:
+  maxHealth: 30
+  damageHopSpeed: 3
+  wallCheckDistance: 0.2
+  ledgeCheckDistance: 0.4
+  groundCheckRadius: 0.3
+  minAgroDistance: 4
+  maxAgroDistance: 5
+  stunResistance: 1
+  stunRecoveryTime: 2
+  closeRangeActionDistance: 3
+  whatIsPlayer:
     serializedVersion: 2
-    m_Bits: 1024
-  gourndCheckRadius: 0.3
+    m_Bits: 256
   whatIsGround:
     serializedVersion: 2
     m_Bits: 512

@@ -14,6 +14,13 @@ public class PlayerData : ScriptableObject
     [Header("In Air State")]
     public float variableJumpHeightMultiplier = 0.5f;
 
+    [Header("Player Attack")]
+    public float attackRadius = 1f;
+    public float damageAmount = 5f;
+    public float stunDamageAmount = 1f;
+
+    public LayerMask whatIsEnemy;
+
 
     [Header("Check Variables")]
     public float gourndCheckRadius = 0.3f;

@@ -4,14 +4,34 @@ using UnityEngine;
 
 public class PlayerAttackState : PlayerAbilityState
 {
-    public PlayerAttackState(Player player, PlayerStateMachine playerStateMachine, PlayerData playerData, string animationBoolString) : base(player, playerStateMachine, playerData, animationBoolString)
+    protected Transform _attackPosition;
+
+    protected AttackDetails _attackDetails;
+    public PlayerAttackState(Player player, PlayerStateMachine playerStateMachine, PlayerData playerData, string animationBoolString, Transform attackPosition) : base(player, playerStateMachine, playerData, animationBoolString)
     {
+        _attackPosition = attackPosition;
     }
 
     public override void AnimationFinishTrigger()
     {
         base.AnimationFinishTrigger();
         _isAbilityDone = true;
+    }
+
+    public override void AnimationTrigger()
+    {
+        base.AnimationTrigger();
+
+        _attackDetails.position = _player.transform.position;
+        _attackDetails.damageAmout = _playerData.damageAmount;
+        _attackDetails.stunDamageAmout = _playerData.stunDamageAmount;
+
+        Collider2D[] detectedEnemies = Physics2D.OverlapCircleAll(_attackPosition.position, _playerData.attackRadius, _playerData.whatIsEnemy);
+
+        foreach(Collider2D detectedEnemy in detectedEnemies)
+        {
+            detectedEnemy.transform.parent.SendMessage("Damage", _attackDetails);
+        }
     }
 
     public override void Enter()
