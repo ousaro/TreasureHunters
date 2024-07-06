@@ -14,6 +14,8 @@ public class CrabbyEnemy : Entity
 
     public Crabby_StunState StunState { get; private set; }
 
+    public Crabby_DeathState DeathState { get; private set; }
+
     [SerializeField]
     private D_IdleState idleStateData;
     [SerializeField]
@@ -26,6 +28,8 @@ public class CrabbyEnemy : Entity
     private D_MeleeAttackState meleeAttackStateData;
     [SerializeField]
     private D_StunState stunStateData;
+    [SerializeField]
+    private D_DeathState deathStateData;
 
     [SerializeField]
     private Transform meleeAttackPosition;
@@ -40,6 +44,7 @@ public class CrabbyEnemy : Entity
         LookForPlayerState = new Crabby_LookForPlayerState(this, stateMachine, "lookForPlayer", lookForPlayerStateData, this);
         MeleeAttackState = new Crabby_MeleeAttackState(this, stateMachine, "meleeAttack", meleeAttackPosition, meleeAttackStateData, this);
         StunState = new Crabby_StunState(this, stateMachine, "stun", stunStateData, this);
+        DeathState = new Crabby_DeathState(this, stateMachine, "death", deathStateData, this);
 
         stateMachine.Initialize(MoveState);
 
@@ -56,9 +61,16 @@ public class CrabbyEnemy : Entity
     {
         base.Damage(attackDetails);
 
-        if (_isStunned && stateMachine.CurrentState != StunState)
+        if (_isDead)
+        {
+            stateMachine.ChangeState(DeathState);
+        }
+        else if (_isStunned && stateMachine.CurrentState != StunState)
         {
             stateMachine.ChangeState(StunState);
+           
         }
+
+        
     }
 }

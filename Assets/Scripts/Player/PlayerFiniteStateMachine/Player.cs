@@ -19,6 +19,10 @@ public class Player : MonoBehaviour
 
     public PlayerAttackState AttackState { get; private set; }
 
+    public PlayerStunState StunState { get; private set; }  
+
+    public PlayerDeathState DeathState { get; private set; }    
+
 
     [SerializeField]
     private PlayerData playerData;
@@ -45,9 +49,15 @@ public class Player : MonoBehaviour
     public Vector2 CurrentVelocity { get; private set; } 
 
     public int FacingDirection { get; private set; }
+    
+    public int LastDamageDirection { get; private set; }
 
+    private float _currentHealth;
+   
 
     private Vector2 _workSpace;
+
+
     #endregion
 
 
@@ -64,6 +74,8 @@ public class Player : MonoBehaviour
         InAirState = new PlayerInAirState(this, StateMachine, playerData, "inAir");
         LandState = new PlayerLandState(this, StateMachine, playerData, "land");
         AttackState = new PlayerAttackState(this, StateMachine, playerData, "attack", attackPosition);
+        StunState = new PlayerStunState(this, StateMachine, playerData, "stun");
+        DeathState = new PlayerDeathState(this, StateMachine, playerData, "death");
 
 
 
@@ -75,7 +87,10 @@ public class Player : MonoBehaviour
         InputHandler = GetComponent<PlayerInputHandler>();
         Rigidbody2D = GetComponent<Rigidbody2D>();
 
+       
+
         FacingDirection = 1; // facing right
+        _currentHealth = playerData.maxHealth;
 
         StateMachine.Initialize(IdleState);
         
@@ -85,6 +100,12 @@ public class Player : MonoBehaviour
     {
         CurrentVelocity = Rigidbody2D.velocity;
         StateMachine.CurrentState.LogicUpdate();
+
+        if (InputHandler.InteractInput)
+        {
+            TriggerInteraction();
+           
+        }
     }
 
     private void FixedUpdate()
@@ -96,6 +117,15 @@ public class Player : MonoBehaviour
 
 
     #region Set Functions
+
+    public void SetVelocity(float velocity, Vector2 angle, int direction)
+    {
+        angle.Normalize();
+        _workSpace.Set(angle.x * velocity * direction, angle.y * velocity);
+        Rigidbody2D.velocity = _workSpace;
+        CurrentVelocity = _workSpace;
+
+    }
     public void SetVelocityX(float velociry)
     {
         _workSpace.Set(velociry, CurrentVelocity.y);
@@ -110,7 +140,7 @@ public class Player : MonoBehaviour
         CurrentVelocity = _workSpace;
     }
 
-    #endregion
+   #endregion
 
     #region Check Functions
 
@@ -132,6 +162,52 @@ public class Player : MonoBehaviour
 
     #region Other Functions
 
+    private void TriggerInteraction()
+    {
+        Collider2D[] detectedInteractables = Physics2D.OverlapCircleAll(transform.position, playerData.interactionCheckRadius, playerData.whatIsInteracteble);
+
+        foreach(Collider2D collider in detectedInteractables)
+        {
+            IInteractables interactable = collider.GetComponent<IInteractables>();
+
+            if (interactable != null)
+            { 
+                interactable.Interact();
+            }
+        }
+          
+    }
+    private void DamageHop(float Velocity)
+    {
+        _workSpace.Set(CurrentVelocity.x, Velocity);
+        Rigidbody2D.velocity = _workSpace;
+        CurrentVelocity = _workSpace;
+    }
+    private void Damage(AttackDetails attackDetails)
+    {
+
+        _currentHealth -= attackDetails.damageAmout;
+        DamageHop(playerData.damageHopSpeed);
+
+        if (attackDetails.position.x > transform.position.x)
+        {
+            LastDamageDirection = -1;
+        }
+        else
+        {
+            LastDamageDirection = 1;
+        }
+
+        StateMachine.ChangeState(StunState);
+
+
+
+        if (_currentHealth <= 0)
+        {
+            StateMachine.ChangeState(DeathState);
+        }
+    }
+
     private void AnimationTrigger() => StateMachine.CurrentState.AnimationTrigger();
 
     private void AnimationFinishTrigger() => StateMachine.CurrentState.AnimationFinishTrigger();
@@ -146,6 +222,8 @@ public class Player : MonoBehaviour
     {
         Gizmos.DrawWireSphere(attackPosition.position, playerData.attackRadius);
         Gizmos.DrawWireSphere(groundCheck.position, playerData.gourndCheckRadius);
+
+        Gizmos.DrawWireSphere(transform.position, playerData.interactionCheckRadius);
         
     }
     #endregion

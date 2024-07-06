@@ -18,6 +18,8 @@ public class PlayerInputHandler : MonoBehaviour
 
     public bool AttackInput { get; private set; }
 
+    public bool InteractInput { get; private set; }
+
 
     [SerializeField]
     private float _inputHoldTime = 0.2f;
@@ -74,5 +76,18 @@ public class PlayerInputHandler : MonoBehaviour
     }
 
     public void UseAttackInput() => AttackInput = false;
+
+    public void OnInteracte(InputAction.CallbackContext context)
+    {
+        if (context.started)
+        {
+            InteractInput = true;
+        }
+
+        if (context.canceled)
+        {
+            InteractInput = false;
+        }
+    }
 
 }

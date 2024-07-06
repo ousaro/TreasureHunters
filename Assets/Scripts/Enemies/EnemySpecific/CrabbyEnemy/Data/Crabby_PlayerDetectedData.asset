@@ -12,3 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d86d219a61bbb3141bd8d80d7179e81f, type: 3}
   m_Name: Crabby_PlayerDetectedData
   m_EditorClassIdentifier: 
+  timeBetweenAttacks: 1

@@ -21,7 +21,15 @@ MonoBehaviour:
   whatIsEnemy:
     serializedVersion: 2
     m_Bits: 1024
+  stunKnockBackSpeed: 10
+  stunKnockBackAngle: {x: 1, y: 2}
+  maxHealth: 100
+  damageHopSpeed: 5
   gourndCheckRadius: 0.3
   whatIsGround:
     serializedVersion: 2
     m_Bits: 512
+  interactionCheckRadius: 2
+  whatIsInteracteble:
+    serializedVersion: 2
+    m_Bits: 8192

@@ -1,16 +1,22 @@
-using Newtonsoft.Json.Bson;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class Entity : MonoBehaviour
 {
+    #region Events
 
+    public Action OnDeath;
+
+    #endregion
+
+    #region Components
     public D_Entity entityData;
 
     public FiniteStateMachine stateMachine;
 
-    public int FacingDirection { get; private set; }
+
     public Rigidbody2D Rigidbody2d { get; private set; }
 
     public Animator Animator { get; private set; }
@@ -19,8 +25,9 @@ public class Entity : MonoBehaviour
 
     public AnimationToStateMachine AnimationToStateMachine { get; private set; }
 
-    public Vector2 CurrentVelocity { get; private set; }
+    #endregion
 
+    #region Transforms variable
 
     [SerializeField]
     private Transform wallCheck;
@@ -31,17 +38,26 @@ public class Entity : MonoBehaviour
     [SerializeField]
     private Transform groundCheck;
 
+    #endregion
+
+    #region Other Variables
+
     private float _currentHealth;
     private float _currentStunResistance;
     private float _lastDamageTime;
 
+    public int FacingDirection { get; private set; }
+    public Vector2 CurrentVelocity { get; private set; }
     public int LastDamageDirection { get; private set; }
 
     private Vector2 _velocityWorkSpace;
 
     protected bool _isStunned;
+    protected bool _isDead;
 
+    #endregion
 
+    #region Unity CallBack Function
     public virtual void Start()
     {
         FacingDirection = -1; // this is depend on the enemy setup in unity 1 right -1 left
@@ -76,6 +92,10 @@ public class Entity : MonoBehaviour
         stateMachine.CurrentState.PhysicsUpdate();
     }
 
+    #endregion
+
+    #region Set Functions
+
     public void SetVelocity(float velocity)
     {
         _velocityWorkSpace.Set(FacingDirection * velocity, CurrentVelocity.y);
@@ -93,6 +113,9 @@ public class Entity : MonoBehaviour
 
     }
 
+    #endregion
+
+    #region Check Functions
     public virtual bool CheckWall()
     {
         return Physics2D.Raycast(wallCheck.position, -AliveGO.transform.right, entityData.wallCheckDistance, entityData.whatIsGround);
@@ -122,7 +145,9 @@ public class Entity : MonoBehaviour
     {
         return Physics2D.Raycast(playerCheck.position, -AliveGO.transform.right, entityData.closeRangeActionDistance, entityData.whatIsPlayer);
     }
-    
+    #endregion
+
+    #region Other Functions
     public virtual void DamageHop(float velocity)
     {
         _velocityWorkSpace.Set(CurrentVelocity.x, velocity);
@@ -154,10 +179,19 @@ public class Entity : MonoBehaviour
             LastDamageDirection = 1;
         }
 
+        if (FacingDirection == LastDamageDirection)
+        {
+            Flip();
+        }
 
-        if(_currentStunResistance <= 0)
+        if (_currentStunResistance <= 0)
         {
             _isStunned = true;
+        }
+
+        if(_currentHealth <= 0)
+        {
+            _isDead = true;
         }
 
     }
@@ -168,6 +202,14 @@ public class Entity : MonoBehaviour
         AliveGO.transform.Rotate(0f, 180f, 0f);
     }
 
+    public virtual void DestroyGameObject()
+    {
+        Destroy(gameObject);
+    }
+
+    #endregion
+
+    #region Draw Gizmos 
     public virtual void OnDrawGizmos()
     {
         Gizmos.DrawLine(wallCheck.position, wallCheck.position + (Vector3)Vector2.right * FacingDirection * entityData.wallCheckDistance);
@@ -183,4 +225,6 @@ public class Entity : MonoBehaviour
 
 
     }
+
+    #endregion
 }

@@ -8,4 +8,8 @@ public class D_MeleeAttackState : ScriptableObject
     public float attackDamage = 10f;
 
     public LayerMask whatIsPlayer;
+
+    public Vector2 VFXOffset = Vector2.zero;
+    public GameObject attackVFX;
+
 }
