@@ -30,6 +30,7 @@ public class PlayerDetectedState : State
         base.Enter();
 
         _entity.SetVelocity(0f);
+        SoundManager.Instance.PlaySoundFXClip(_entity.entityData.playerDetectedSFX,_entity.transform, 1f);
 
     }
 

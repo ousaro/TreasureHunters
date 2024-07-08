@@ -1,5 +1,4 @@
-﻿using Osaro.Enemy;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Osaro.Utilities
 {

@@ -8,8 +8,13 @@ public class PlayerData : ScriptableObject
     [Header("Move State")]
     public float movementVelocity = 10f;
 
+    public AudioClip moveSFX;
+
     [Header("Jump State")]
     public float jumpVelocity = 15f;
+
+    public AudioClip jumpSFX;
+    public AudioClip landingSFX;
 
     [Header("In Air State")]
     public float variableJumpHeightMultiplier = 0.5f;
@@ -18,13 +23,17 @@ public class PlayerData : ScriptableObject
     public float attackRadius = 1f;
     public float damageAmount = 5f;
     public float stunDamageAmount = 1f;
+
+    public AudioClip attackSFX;
   
 
-    public LayerMask whatIsEnemy;
+    public LayerMask whatIsDamageable;
 
     [Header("Player Stun State")]
     public float stunKnockBackSpeed = 10f;
     public Vector2 stunKnockBackAngle;
+
+    public AudioClip stunClip;
 
     [Header("Player health")]
     public float maxHealth = 50f;

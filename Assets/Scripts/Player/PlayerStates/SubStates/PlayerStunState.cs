@@ -30,6 +30,7 @@ public class PlayerStunState : PlayerState
     {
         base.Enter();
         _player.SetVelocity(_playerData.stunKnockBackSpeed, _playerData.stunKnockBackAngle, _player.LastDamageDirection);
+        SoundManager.Instance.PlaySoundFXClip(_playerData.stunClip, _player.transform, 1f);
     }
 
     public override void Exit()

@@ -16,7 +16,8 @@
     {
         _entity.AnimationToStateMachine.deathState = this;
         base.Enter();
- 
+        SoundManager.Instance.PlaySoundFXClip(_entity.entityData.deathSFX, _entity.transform, 1f);
+
     }
 
     public override void Exit()

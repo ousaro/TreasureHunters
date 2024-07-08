@@ -29,6 +29,7 @@ public class StunState : State
         _isStunTimeOver = false;
         _isMovementStopped = false;
         _entity.SetVelocity(_stateData.stunKnockBackSpeed, _stateData.stunKnockBackAngle, _entity.LastDamageDirection);
+        SoundManager.Instance.PlaySoundFXClip(_entity.entityData.stunSFX, _entity.transform, 1f);
     }
 
     public override void Exit()

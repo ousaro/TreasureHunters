@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Entity : MonoBehaviour
+public class Entity : MonoBehaviour, IDamagable
 {
     #region Events
 
@@ -21,9 +21,8 @@ public class Entity : MonoBehaviour
 
     public Animator Animator { get; private set; }
 
-    public GameObject AliveGO { get; private set; }
-
     public AnimationToStateMachine AnimationToStateMachine { get; private set; }
+
 
     #endregion
 
@@ -67,10 +66,11 @@ public class Entity : MonoBehaviour
 
        
 
-        AliveGO = transform.Find("Alive").gameObject;
-        Rigidbody2d = AliveGO.GetComponent<Rigidbody2D>();
-        Animator = AliveGO.GetComponent<Animator>();
-        AnimationToStateMachine = AliveGO.GetComponent<AnimationToStateMachine>();
+       
+        Rigidbody2d = GetComponent<Rigidbody2D>();
+        Animator = GetComponent<Animator>();
+        AnimationToStateMachine = GetComponent<AnimationToStateMachine>();
+        
 
         stateMachine = new FiniteStateMachine();
         
@@ -118,7 +118,7 @@ public class Entity : MonoBehaviour
     #region Check Functions
     public virtual bool CheckWall()
     {
-        return Physics2D.Raycast(wallCheck.position, -AliveGO.transform.right, entityData.wallCheckDistance, entityData.whatIsGround);
+        return Physics2D.Raycast(wallCheck.position, -transform.right, entityData.wallCheckDistance, entityData.whatIsGround);
     }
 
     public virtual bool CheckLedge()
@@ -133,17 +133,17 @@ public class Entity : MonoBehaviour
 
     public virtual bool CheckPlayerInMinAgroRange()
     {
-        return Physics2D.Raycast(playerCheck.position, -AliveGO.transform.right, entityData.minAgroDistance, entityData.whatIsPlayer); // -1 here because the sprite of the enemy is facing left at the beggining
+        return Physics2D.Raycast(playerCheck.position, -transform.right, entityData.minAgroDistance, entityData.whatIsPlayer); // -1 here because the sprite of the enemy is facing left at the beggining
     }
 
     public virtual bool CheckPlayerInMaxAgroRange()
     {
-        return Physics2D.Raycast(playerCheck.position, -AliveGO.transform.right, entityData.maxAgroDistance, entityData.whatIsPlayer);
+        return Physics2D.Raycast(playerCheck.position, -transform.right, entityData.maxAgroDistance, entityData.whatIsPlayer);
     }
 
     public virtual bool CheckPlayerInCloseRangeAction()
     {
-        return Physics2D.Raycast(playerCheck.position, -AliveGO.transform.right, entityData.closeRangeActionDistance, entityData.whatIsPlayer);
+        return Physics2D.Raycast(playerCheck.position, -transform.right, entityData.closeRangeActionDistance, entityData.whatIsPlayer);
     }
     #endregion
 
@@ -170,7 +170,7 @@ public class Entity : MonoBehaviour
 
         DamageHop(entityData.damageHopSpeed);
 
-        if(attackDetails.position.x > AliveGO.transform.position.x)
+        if(attackDetails.position.x > transform.position.x)
         {
             LastDamageDirection = -1;
         }
@@ -199,7 +199,7 @@ public class Entity : MonoBehaviour
     public virtual void Flip()
     {
         FacingDirection *= -1;
-        AliveGO.transform.Rotate(0f, 180f, 0f);
+        transform.Rotate(0f, 180f, 0f);
     }
 
     public virtual void DestroyGameObject()

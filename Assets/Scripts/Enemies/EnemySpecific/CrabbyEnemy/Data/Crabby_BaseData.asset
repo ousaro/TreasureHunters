@@ -28,3 +28,9 @@ MonoBehaviour:
   whatIsGround:
     serializedVersion: 2
     m_Bits: 512
+  deathSFX: {fileID: 8300000, guid: 3c599369cabb6f54895872fe82b61175, type: 3}
+  stunSFX: {fileID: 8300000, guid: f344b218bbfd0eb43ba73d03b8da93ac, type: 3}
+  moveSFX: {fileID: 8300000, guid: 1308abe638cf84b46b52cab207246510, type: 3}
+  attackSFX: {fileID: 8300000, guid: afd5d833925116f428105c4e7f6dd344, type: 3}
+  lookForPlayerSFX: {fileID: 8300000, guid: fa663b5a833d56a4db64a3d52b6e733e, type: 3}
+  playerDetectedSFX: {fileID: 8300000, guid: a747c36ab09953c4ba2b825c0f495709, type: 3}

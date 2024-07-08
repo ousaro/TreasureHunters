@@ -13,17 +13,22 @@ MonoBehaviour:
   m_Name: playerData
   m_EditorClassIdentifier: 
   movementVelocity: 10
+  moveSFX: {fileID: 8300000, guid: b235c22acb8203844b5541f1d4764607, type: 3}
   jumpVelocity: 30
+  jumpSFX: {fileID: 8300000, guid: ae2d722cd60f8c943bc45571d2d0128c, type: 3}
+  landingSFX: {fileID: 8300000, guid: baa43174d2dd34f459514be704bcbe7c, type: 3}
   variableJumpHeightMultiplier: 0.5
   attackRadius: 1.3
   damageAmount: 5
   stunDamageAmount: 1
-  whatIsEnemy:
+  attackSFX: {fileID: 8300000, guid: 3deda3e703815114a87e07e1886f1e7d, type: 3}
+  whatIsDamageable:
     serializedVersion: 2
-    m_Bits: 1024
+    m_Bits: 128
   stunKnockBackSpeed: 10
   stunKnockBackAngle: {x: 1, y: 2}
-  maxHealth: 100
+  stunClip: {fileID: 8300000, guid: 807fa595ad74571449b6eccd8d117ecb, type: 3}
+  maxHealth: 1000000
   damageHopSpeed: 5
   gourndCheckRadius: 0.3
   whatIsGround:

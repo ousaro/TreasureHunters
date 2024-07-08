@@ -21,4 +21,13 @@ public class D_Entity : ScriptableObject
 
     public LayerMask whatIsPlayer;
     public LayerMask whatIsGround;
+
+
+    public AudioClip deathSFX;
+    public AudioClip stunSFX;
+    public AudioClip moveSFX;
+    public AudioClip attackSFX;
+    public AudioClip lookForPlayerSFX;
+    public AudioClip playerDetectedSFX;
+    
 }

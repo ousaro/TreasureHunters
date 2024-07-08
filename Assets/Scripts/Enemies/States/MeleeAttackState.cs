@@ -25,9 +25,10 @@ public class MeleeAttackState : AttackState
         base.Enter();
 
         _attackDetails.damageAmout = _stateData.attackDamage;
-        _attackDetails.position = _entity.AliveGO.transform.position;
+        _attackDetails.position = _entity.transform.position;
+        SoundManager.Instance.PlaySoundFXClip(_entity.entityData.attackSFX, _entity.transform, 1f);
 
-        
+
     }
 
     public override void Exit()

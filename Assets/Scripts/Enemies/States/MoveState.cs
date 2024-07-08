@@ -28,16 +28,19 @@ public class MoveState : State
     {
         base.Enter();
         _entity.SetVelocity(_stateData.movementSpeed);
+        
     }
 
     public override void Exit()
     {
         base.Exit();
+       
     }
 
     public override void LogicUpdate()
     {
         base.LogicUpdate();
+       
     }
 
     public override void PhysicsUpdate()

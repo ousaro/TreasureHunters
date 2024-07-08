@@ -34,6 +34,8 @@ public class Player : MonoBehaviour
     public Rigidbody2D Rigidbody2D { get; private set; }
 
     public PlayerInputHandler InputHandler { get; private set; }
+
+    public PlayerSoundManager SoundManager { get; private set; }
     #endregion
 
     #region Check Transforms
@@ -86,6 +88,7 @@ public class Player : MonoBehaviour
         Animator = GetComponent<Animator>();
         InputHandler = GetComponent<PlayerInputHandler>();
         Rigidbody2D = GetComponent<Rigidbody2D>();
+        SoundManager = GetComponent<PlayerSoundManager>();
 
        
 
@@ -188,6 +191,7 @@ public class Player : MonoBehaviour
 
         _currentHealth -= attackDetails.damageAmout;
         DamageHop(playerData.damageHopSpeed);
+
 
         if (attackDetails.position.x > transform.position.x)
         {

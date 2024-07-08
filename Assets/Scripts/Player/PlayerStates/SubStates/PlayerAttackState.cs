@@ -33,11 +33,17 @@ public class PlayerAttackState : PlayerAbilityState
         _attackDetails.damageAmout = _playerData.damageAmount;
         _attackDetails.stunDamageAmout = _playerData.stunDamageAmount;
 
-        Collider2D[] detectedEnemies = Physics2D.OverlapCircleAll(_attackPosition.position, _playerData.attackRadius, _playerData.whatIsEnemy);
+        Collider2D[] detectedEnemies = Physics2D.OverlapCircleAll(_attackPosition.position, _playerData.attackRadius, _playerData.whatIsDamageable);
 
         foreach(Collider2D detectedEnemy in detectedEnemies)
         { 
-            detectedEnemy.transform.parent.SendMessage("Damage", _attackDetails);
+            IDamagable damagable = detectedEnemy.GetComponent<IDamagable>();
+
+            if (damagable != null)
+            {
+                damagable.Damage(_attackDetails);
+            }
+           
           
         }
         
@@ -53,6 +59,7 @@ public class PlayerAttackState : PlayerAbilityState
         base.Enter();
 
         _player.SetVelocityX(0);
+        SoundManager.Instance.PlaySoundFXClip(_playerData.attackSFX, _player.transform, 1f);
 
     }
 

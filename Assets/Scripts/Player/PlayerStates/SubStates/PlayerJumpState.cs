@@ -15,5 +15,7 @@ public class PlayerJumpState : PlayerAbilityState
         _isAbilityDone = true;
 
         _player.InAirState.SetIsJumping();
+
+        SoundManager.Instance.PlaySoundFXClip(_playerData.jumpSFX, _player.transform, 1f);
     }
 }

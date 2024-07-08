@@ -10,6 +10,8 @@ public class ChestController : MonoBehaviour, IInteractables
     [SerializeField]
     private float _timeBetweenInteractions = 1f;
 
+    [SerializeField]
+    private AudioClip openCloseSFX;
     private void Awake()
     {
         _animator = GetComponent<Animator>();
@@ -28,6 +30,7 @@ public class ChestController : MonoBehaviour, IInteractables
         {
             SetCanOpen(!canOpen); 
             _lastInteractionTime = Time.time;
+            SoundManager.Instance.PlaySoundFXClip(openCloseSFX, transform, 0.5f);
 
         }
     }

@@ -61,7 +61,8 @@ public class LookForPlayerState : State
             _entity.Flip();
             _lastTurnTime = Time.time;
             _amountOfTurnDone++;
-           
+            SoundManager.Instance.PlaySoundFXClip(_entity.entityData.lookForPlayerSFX, _entity.transform, 1f);
+
         }
         
         if(_amountOfTurnDone >= _stateData.amoutOfTurns)
