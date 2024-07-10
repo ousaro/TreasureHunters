@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class SoundManager : MonoBehaviour
 {
@@ -8,6 +9,9 @@ public class SoundManager : MonoBehaviour
 
     [SerializeField]
     private AudioSource soundFXObject;
+
+
+    private AudioSource _audioSource;
 
 
 
@@ -18,8 +22,27 @@ public class SoundManager : MonoBehaviour
         if(Instance == null)
         {
             Instance = this;
+            DontDestroyOnLoad(this);
         }
+        else
+        {
+            Destroy(gameObject);
+        }
+
+        _audioSource = GetComponent<AudioSource>();
     
+    }
+
+    private void Update()
+    {
+        if(SceneManager.GetActiveScene().buildIndex != 0)
+        {
+            _audioSource.volume = 0.05f;
+        }
+        else
+        {
+            _audioSource.volume = 0.5f;
+        }
     }
 
     public void PlaySoundFXClip(AudioClip audioClip, Transform spawnTransform, float volume, bool loop=false)

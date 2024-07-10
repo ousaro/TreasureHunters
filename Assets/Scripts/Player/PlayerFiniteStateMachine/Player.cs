@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro.EditorUtilities;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class Player : MonoBehaviour
 {
@@ -36,6 +37,14 @@ public class Player : MonoBehaviour
     public PlayerInputHandler InputHandler { get; private set; }
 
     public PlayerSoundManager SoundManager { get; private set; }
+
+    public UIDocument hud;
+
+    private HealthBar _healthbar;
+
+
+    [Range(0,1)]
+    public float helathPercent = 1f;
     #endregion
 
     #region Check Transforms
@@ -89,14 +98,28 @@ public class Player : MonoBehaviour
         InputHandler = GetComponent<PlayerInputHandler>();
         Rigidbody2D = GetComponent<Rigidbody2D>();
         SoundManager = GetComponent<PlayerSoundManager>();
+        var root = hud.rootVisualElement;
+        _healthbar = root.Q<HealthBar>();
+       
 
        
 
         FacingDirection = 1; // facing right
         _currentHealth = playerData.maxHealth;
 
+        _healthbar.value = _currentHealth / playerData.maxHealth;
+
         StateMachine.Initialize(IdleState);
         
+    }
+
+    private void OnValidate()
+    {
+        if (_healthbar != null)
+        {
+            _healthbar.value = helathPercent;
+            _currentHealth = (int)(helathPercent * playerData.maxHealth);
+        }
     }
 
     private void Update()
@@ -190,6 +213,8 @@ public class Player : MonoBehaviour
     {
 
         _currentHealth -= attackDetails.damageAmout;
+        helathPercent = (float)_currentHealth / playerData.maxHealth;
+        _healthbar.value = helathPercent;
         DamageHop(playerData.damageHopSpeed);
 
 

@@ -19,7 +19,7 @@ MonoBehaviour:
   landingSFX: {fileID: 8300000, guid: baa43174d2dd34f459514be704bcbe7c, type: 3}
   variableJumpHeightMultiplier: 0.5
   attackRadius: 1.3
-  damageAmount: 5
+  damageAmount: 30
   stunDamageAmount: 1
   attackSFX: {fileID: 8300000, guid: 3deda3e703815114a87e07e1886f1e7d, type: 3}
   whatIsDamageable:
@@ -28,7 +28,7 @@ MonoBehaviour:
   stunKnockBackSpeed: 10
   stunKnockBackAngle: {x: 1, y: 2}
   stunClip: {fileID: 8300000, guid: 807fa595ad74571449b6eccd8d117ecb, type: 3}
-  maxHealth: 1000000
+  maxHealth: 100
   damageHopSpeed: 5
   gourndCheckRadius: 0.3
   whatIsGround:

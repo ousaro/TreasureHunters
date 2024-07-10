@@ -1,0 +1,8 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI%20Toolkit/PlayerStyle.uss?fileID=7433441132597879392&amp;guid=c9411ac7bddaca841a73e195c428af15&amp;type=3#PlayerStyle" />
+    <ui:VisualElement name="healthBar" style="width: 400px; height: 50px; background-color: rgba(56, 56, 56, 0); -unity-background-image-tint-color: rgba(56, 56, 56, 0);">
+        <ui:VisualElement name="background" style="background-image: url(&apos;project://database/Assets/UI/Player/Slider%20background.png?fileID=21300000&amp;guid=a98a9345b37bb8740a653f77f8f75d4c&amp;type=3#Slider background&apos;); width: auto; display: flex; height: auto; flex-grow: 1; overflow: hidden;">
+            <ui:VisualElement name="foreground" style="width: auto; height: auto; background-image: url(&apos;project://database/Assets/UI/Player/Red%20Slider%20Filler.png?fileID=21300000&amp;guid=ece7f5f3e7b62f54b902d6aaddf98a48&amp;type=3#Red Slider Filler&apos;); margin-left: 10px; margin-right: 10px; margin-top: 10px; margin-bottom: 10px; flex-grow: 1; transform-origin: left bottom;" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

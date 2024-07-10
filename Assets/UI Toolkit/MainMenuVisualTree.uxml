@@ -1,0 +1,8 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI%20Toolkit/MainMenuStyle.uss?fileID=7433441132597879392&amp;guid=7dd9a1a6554a05744a0dede304069cda&amp;type=3#MainMenuStyle" />
+    <ui:VisualElement name="Container" style="background-image: url(&apos;project://database/Assets/UI/MainMenu/MainMenuBg.jpg?fileID=21300000&amp;guid=f2a297aeb143e524cadec18d63fd24aa&amp;type=3#MainMenuBg&apos;); -unity-background-scale-mode: scale-and-crop; height: 100%; justify-content: flex-start; align-items: center; flex-direction: column; flex-wrap: nowrap;">
+        <ui:Label text="Main Menu" display-tooltip-when-elided="true" name="Hedear" class="header" />
+        <ui:Button display-tooltip-when-elided="true" text="Start" name="Start_Button" class="button" />
+        <ui:Button text="Quit" display-tooltip-when-elided="true" name="Exit_Button" class="button" />
+    </ui:VisualElement>
+</ui:UXML>

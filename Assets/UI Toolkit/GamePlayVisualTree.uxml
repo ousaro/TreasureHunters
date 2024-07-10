@@ -1,0 +1,16 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI%20Toolkit/GamePlayStyle.uss?fileID=7433441132597879392&amp;guid=9f2d242909e01ce4baaa9e6a010a5735&amp;type=3#GamePlayStyle" />
+    <ui:VisualElement name="container" style="height: 100%; flex-direction: column; align-items: flex-end;">
+        <ui:Button display-tooltip-when-elided="true" name="Pause_button" class="button" style="background-image: url(&apos;project://database/Assets/UI/GamePlay/buttons_1x.png?fileID=-2136642482&amp;guid=cdfc5cbec1669e14eb815b91cdef6597&amp;type=3#buttons_1x_1&apos;); padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0; margin-top: 5px; margin-right: 5px;">
+            <ui:VisualElement name="PauseImg" class="hoverImg" style="background-image: url(&apos;project://database/Assets/UI/GamePlay/buttons_1x.png?fileID=452423657&amp;guid=cdfc5cbec1669e14eb815b91cdef6597&amp;type=3#buttons_1x_6&apos;); width: 50%; height: 50%; left: 25%; top: 10px; -unity-background-image-tint-color: rgb(255, 255, 255);" />
+        </ui:Button>
+        <ui:VisualElement name="GamePlayMenu" style="position: absolute; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.49); align-items: center; justify-content: center; flex-direction: row; display: none;">
+            <ui:Button display-tooltip-when-elided="true" enable-rich-text="false" name="Menu_button" class="button" style="margin-left: 10px; margin-right: 10px; margin-top: 0; margin-bottom: 0; padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0;">
+                <ui:IMGUIContainer name="MenuIcon" style="background-image: url(&apos;project://database/Assets/UI/GamePlay/buttons_1x.png?fileID=-844123741&amp;guid=cdfc5cbec1669e14eb815b91cdef6597&amp;type=3#buttons_1x_4&apos;); position: absolute; width: 30px; height: 30px; left: 17px; top: 15px;" />
+            </ui:Button>
+            <ui:Button display-tooltip-when-elided="true" name="Resume_button" class="button" style="padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0; margin-left: 10px; margin-right: 10px; margin-top: 0; margin-bottom: 0;">
+                <ui:IMGUIContainer name="ResumeIcon" style="background-image: url(&apos;project://database/Assets/UI/GamePlay/buttons_1x.png?fileID=-1040796901&amp;guid=cdfc5cbec1669e14eb815b91cdef6597&amp;type=3#buttons_1x_7&apos;); width: 30px; height: 30px; position: absolute; left: 17px; top: 15px;" />
+            </ui:Button>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>
