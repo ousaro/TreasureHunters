@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -10,54 +11,65 @@ public class GameManager : MonoBehaviour
 
     private Player player;
 
+    [SerializeField] private GameObject deathScene;
+
+    [SerializeField] private GameObject pauseScene;
+
 
     private void Awake()
     {
         if(Instance == null)
         {
             Instance = this;
-            //DontDestroyOnLoad(this);
+            DontDestroyOnLoad(this);
         }
         else
         {
             Destroy(gameObject);
         }
 
-        ResumeGame();
-    }
-
-
-    // Start is called before the first frame update
-    void Start()
-    {
         player = FindObjectOfType<Player>();
         if (player == null)
         {
             Debug.LogError("Player not found!");
         }
+
+        deathScene.SetActive(false);
+
+        ResumeGame();
     }
 
-    // Update is called once per frame
-    void Update()
+
+
+    private void OnEnable()
     {
-        if (player == null)
-        {
-            GameOver();
-        }
+        if (player == null) return;
+        player.OnDeath += GameOver;
+    }
+
+    private void OnDisable()
+    {
+        if (player == null) return;
+        player.OnDeath -= GameOver;
     }
 
     public void PauseGame()
     {
         Time.timeScale = 0;
+        pauseScene.SetActive(true);
     }
 
     public void ResumeGame()
     {
         Time.timeScale = 1;
+        pauseScene.SetActive(false);
     }
 
     public void GameOver()
     {
+        PauseGame();
+        Destroy(player.gameObject);
+        deathScene.SetActive(true);
         Debug.Log("Game Over ");
     }
 }

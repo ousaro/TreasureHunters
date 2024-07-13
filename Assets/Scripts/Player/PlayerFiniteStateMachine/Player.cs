@@ -1,11 +1,17 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
-using TMPro.EditorUtilities;
 using UnityEngine;
 using UnityEngine.UIElements;
 
 public class Player : MonoBehaviour
 {
+    #region Events
+
+    public event Action OnDeath;
+
+    #endregion
+
     #region State Variable
     public PlayerStateMachine StateMachine { get; private set; }
 
@@ -16,13 +22,13 @@ public class Player : MonoBehaviour
 
     public PlayerLandState LandState { get; private set; }
 
-    public PlayerInAirState InAirState { get; private set; }  
+    public PlayerInAirState InAirState { get; private set; }
 
     public PlayerAttackState AttackState { get; private set; }
 
-    public PlayerStunState StunState { get; private set; }  
+    public PlayerStunState StunState { get; private set; }
 
-    public PlayerDeathState DeathState { get; private set; }    
+    public PlayerDeathState DeathState { get; private set; }
 
 
     [SerializeField]
@@ -43,7 +49,7 @@ public class Player : MonoBehaviour
     private HealthBar _healthbar;
 
 
-    [Range(0,1)]
+    [Range(0, 1)]
     public float helathPercent = 1f;
     #endregion
 
@@ -57,14 +63,14 @@ public class Player : MonoBehaviour
 
     [SerializeField]
     private Transform attackPosition;
-    public Vector2 CurrentVelocity { get; private set; } 
+    public Vector2 CurrentVelocity { get; private set; }
 
     public int FacingDirection { get; private set; }
-    
+
     public int LastDamageDirection { get; private set; }
 
     private float _currentHealth;
-   
+
 
     private Vector2 _workSpace;
 
@@ -77,7 +83,7 @@ public class Player : MonoBehaviour
     {
 
         StateMachine = new PlayerStateMachine();
-        
+
 
         IdleState = new PlayerIdleState(this, StateMachine, playerData, "idle");
         MoveState = new PlayerMoveState(this, StateMachine, playerData, "move");
@@ -100,9 +106,9 @@ public class Player : MonoBehaviour
         SoundManager = GetComponent<PlayerSoundManager>();
         var root = hud.rootVisualElement;
         _healthbar = root.Q<HealthBar>();
-       
 
-       
+
+
 
         FacingDirection = 1; // facing right
         _currentHealth = playerData.maxHealth;
@@ -110,7 +116,7 @@ public class Player : MonoBehaviour
         _healthbar.value = _currentHealth / playerData.maxHealth;
 
         StateMachine.Initialize(IdleState);
-        
+
     }
 
     private void OnValidate()
@@ -130,7 +136,7 @@ public class Player : MonoBehaviour
         if (InputHandler.InteractInput)
         {
             TriggerInteraction();
-           
+
         }
     }
 
@@ -166,7 +172,7 @@ public class Player : MonoBehaviour
         CurrentVelocity = _workSpace;
     }
 
-   #endregion
+    #endregion
 
     #region Check Functions
 
@@ -176,7 +182,7 @@ public class Player : MonoBehaviour
     }
     public void CheckIfShouldFlip(int xInput)
     {
-        if(xInput != 0 && xInput != FacingDirection)
+        if (xInput != 0 && xInput != FacingDirection)
         {
             Flip();
         }
@@ -192,16 +198,16 @@ public class Player : MonoBehaviour
     {
         Collider2D[] detectedInteractables = Physics2D.OverlapCircleAll(transform.position, playerData.interactionCheckRadius, playerData.whatIsInteracteble);
 
-        foreach(Collider2D collider in detectedInteractables)
+        foreach (Collider2D collider in detectedInteractables)
         {
             IInteractables interactable = collider.GetComponent<IInteractables>();
 
             if (interactable != null)
-            { 
+            {
                 interactable.Interact();
             }
         }
-          
+
     }
     private void DamageHop(float Velocity)
     {
@@ -233,8 +239,15 @@ public class Player : MonoBehaviour
 
         if (_currentHealth <= 0)
         {
-            StateMachine.ChangeState(DeathState);
+            
+            TriggerDeathEvent();
         }
+    }
+
+    public void TriggerDeathEvent()
+    {
+        StateMachine.ChangeState(DeathState);
+        OnDeath?.Invoke();
     }
 
     private void AnimationTrigger() => StateMachine.CurrentState.AnimationTrigger();

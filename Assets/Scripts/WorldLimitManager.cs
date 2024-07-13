@@ -9,7 +9,16 @@ public class WorldLimitManager : MonoBehaviour
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        Destroy(collision.gameObject);
+        if (collision.CompareTag("Player"))
+        {
+            Player player = collision.GetComponent<Player>();
+            player.TriggerDeathEvent();
+        }
+        else
+        {
+
+            Destroy(collision.gameObject);
+        }
        
     }
 }

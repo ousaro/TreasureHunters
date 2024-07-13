@@ -24,7 +24,7 @@
     public override void Enter()
     {
         base.Enter();
-
+        SoundManager.Instance.PlaySoundFXClip(_playerData.deathClip, _player.transform, 1f);
         _player.gameObject.SetActive(false);
     }
 

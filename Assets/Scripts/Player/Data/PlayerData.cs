@@ -39,6 +39,8 @@ public class PlayerData : ScriptableObject
     public float maxHealth = 50f;
     public float damageHopSpeed = 5f;
 
+    public AudioClip deathClip;
+
 
     [Header("Check Variables")]
     public float gourndCheckRadius = 0.3f;

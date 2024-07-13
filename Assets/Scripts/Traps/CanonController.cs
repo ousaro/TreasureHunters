@@ -1,9 +1,14 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class CanonController : MonoBehaviour, IDamagable
 {
+    public event Action<float, float> OnHealthChanged;
+
+    public event Action OnDeath;
+
     private Animator _animator;
 
     [SerializeField]
@@ -85,12 +90,14 @@ public class CanonController : MonoBehaviour, IDamagable
     {
         SwitchState(States.hit);
         _currentHealth -= attackDetails.damageAmout;
+        OnHealthChanged?.Invoke(_currentHealth, maxHealth);
 
        
 
         if (_currentHealth <= 0)
         {
             SwitchState(States.destroy);
+            OnDeath?.Invoke();
         }
     }
 

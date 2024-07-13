@@ -17,7 +17,6 @@ public class Crabby_DeathState : DeathState
     public override void Enter()
     {
         base.Enter();
-        _entity.OnDeath?.Invoke();
         //_entity.GetComponent<Collider2D>().enabled = false;
     }
 

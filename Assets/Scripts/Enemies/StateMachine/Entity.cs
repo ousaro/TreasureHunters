@@ -7,7 +7,9 @@ public class Entity : MonoBehaviour, IDamagable
 {
     #region Events
 
-    public Action OnDeath;
+    public event Action OnDeath;
+    public event Action<float,float> OnHealthChanged;
+
 
     #endregion
 
@@ -53,6 +55,8 @@ public class Entity : MonoBehaviour, IDamagable
 
     protected bool _isStunned;
     protected bool _isDead;
+
+    
 
     #endregion
 
@@ -168,6 +172,8 @@ public class Entity : MonoBehaviour, IDamagable
         _currentHealth -= attackDetails.damageAmout;
         _currentStunResistance -= attackDetails.stunDamageAmout;
 
+        OnHealthChanged?.Invoke(_currentHealth, entityData.maxHealth);
+
         DamageHop(entityData.damageHopSpeed);
 
         if(attackDetails.position.x > transform.position.x)
@@ -192,6 +198,7 @@ public class Entity : MonoBehaviour, IDamagable
         if(_currentHealth <= 0)
         {
             _isDead = true;
+            OnDeath?.Invoke();
         }
 
     }
