@@ -3,7 +3,7 @@
 ## Overview  
 **Treasure Hunter** is a simple Unity2D game designed to explore and learn about essential game development concepts and software design patterns. It is a single-scene game with the goal of collecting treasures while learning to organize a project effectively.
 
-<img src="./screenshot.JPG" alt="Preview Image" width="500" style="display: inline-block; margin-right: 20px;"/>
+<img src="./screenshoot.JPG" alt="Preview Image" width="500" style="display: inline-block; margin-right: 20px;"/>
 
 ### Features:  
 - **Design Patterns**: Demonstrates the use of Singleton, State, and Observer patterns.  
@@ -28,6 +28,7 @@ Watch a preview of the game [here](https://youtu.be/gCIBulQ_Vxg).
    - Manages game-wide single-instance components like GameManager or AudioManager or Player.  
 2. **State Pattern**:  
    - Handles different states of the player (Idle, Running, Attacking, Jumping, etc.).  
+   <img src="./Player FiniteStateMachine.png" alt="Preview Image" width="500" style="display: inline-block; margin-right: 20px;"/>
 3. **Observer Pattern**:  
    - Implements a notification system between objects (e.g., player damage  notify the UI, or a damagabel instance get detected by the player).  
 
