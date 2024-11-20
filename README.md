@@ -16,7 +16,7 @@
 
 
 ## Game Preview
-Watch a preview of the game [here](https://youtu.be/gCIBulQ_Vxg).
+Watch a preview of the game [here](https://youtu.be/4nQMcIk_6yA).
 
 
 ---
